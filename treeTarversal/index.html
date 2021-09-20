@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function Node(value){
+        this.value = value;
+       this.left = null;
+        this.right = null;
+    }
+    let a = new Node("a");
+    let b = new Node("b");
+    let c = new Node("c");
+    let d = new Node("d");
+    let e = new Node("e");
+    let f = new Node("f");
+    let g = new Node("g");
+
+    a.left = c;
+    a.right = b;
+    c.left = f;
+    c.right = g;
+    b.left = d;
+    b.right = e;
+ //递归的先序，中序，后序遍历
+    function preTraversal(root){
+      if(root === null) return ;
+      console.log(root.value);
+      preTraversal(root.left);
+      preTraversal(root.right);
+
+    }
+    function midTraversal(root){
+        if(root === null) return;
+         midTraversal(root.left);
+         console.log(root.value);
+         midTraversal(root.right);
+    }
+    function endTraversal(root){
+        if(root === null) return;
+        endTraversal(root.left);
+        endTraversal(root.right);
+        console.log(root.value);
+
+    }
+
+    // 非递归先序，中序，后序遍历；
+
+   function pre(root){
+        if(root === null) return;
+        let flg = true,
+            leftChild = [];
+        do{
+            console.log(root.value);
+            if( root.right !== null){
+                leftChild.push(root.right);
+            }
+            root = root.left;
+            if(root == null && leftChild.length == 0){
+                flg = false;
+            }
+            if(root == null && leftChild.length !== 0){
+                root = leftChild.pop();
+            }
+
+        }while(flg)
+
+   }
+
+   function mid(root){
+        if(root == null) return ;
+        let flg = true,
+            rootChild = [];
+        do{
+
+            if(root.left !== null && root.left.left !== null  ){
+                rootChild.push(root);
+            }
+
+            if(root.left == null ){
+                console.log(root.value);
+                flg = false;
+            }
+            root = root.left;
+
+
+        }while(flg)
+       console.log(rootChild);
+
+   }
+
+function next(root){
+
+}
+
+mid(a);
+
+
+
+
+
+</script>
+</body>
+</html>
