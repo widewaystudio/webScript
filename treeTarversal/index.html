@@ -18,11 +18,16 @@
     let e = new Node("e");
     let f = new Node("f");
     let g = new Node("g");
+    let h = new Node("h");
+    let i = new Node('i');
+
 
     a.left = c;
     a.right = b;
     c.left = f;
     c.right = g;
+    g.right = h;
+    g.left = i;
     b.left = d;
     b.right = e;
  //递归的先序，中序，后序遍历
@@ -73,30 +78,84 @@
    function mid(root){
         if(root == null) return ;
         let flg = true,
-            rootChild = [];
+            rootChild = [],
+            temp = '';
         do{
-
-            if(root.left !== null && root.left.left !== null  ){
+            if(root.left !== null){
                 rootChild.push(root);
+                root = root.left;
+            }else if(root.right !== null){
+                root = root.right;
             }
-
-            if(root.left == null ){
+            if(root.left == null && root.right == null){
                 console.log(root.value);
-                flg = false;
+                if(rootChild.length !==0 ){
+                   temp = rootChild.pop();
+                    console.log(temp.value);
+                    if(temp.right != null){
+                        root = temp.right;
+                    }
+                }
             }
-            root = root.left;
 
+          if(rootChild.length == 0 && root.left == null && root.right == null){
+              console.log(root.value);
+              flg = false;
+          }
 
         }while(flg)
        console.log(rootChild);
 
    }
 
-function next(root){
+    function next(root){
+        if(root == null) return;
+        let flg = true,
+            rootChild = [],
+            temp = null,
+            count = 0,
+            already = [],
+            temps = '',
+            temproot = root;
+        do{
+            if(root.left !== null){
+                rootChild.push(root);
+                root = root.left;
+            }else if(root.right !== null){
+                rootChild.push(root);
+                root = root.right;
+            }
+            if(root.left == null && root.right == null){
+                console.log(root.value);
+                while(already.length != 0 && (already.slice(-1)[0].right.value == root.value || already.slice(-1)[0].right.value == temps) ){
+                    temps = already.pop().value;
+                    console.log(temps);
+                }
 
-}
+               if(rootChild.length !== 0){
+                   temp = rootChild.pop();
+                   if(temp.right !== null){
+                       root = temp.right;
+                       if(temp.value == temproot.value){
+                           console.log(temp.value);
+                       }else{
+                           already.push(temp);
+                       }
+                   }else{
+                       console.log(temp.value);
+                   }
+               }
 
-mid(a);
+            }
+
+            if(root.right == null && root.left == null && already.length == 0 && rootChild.length == 0 ){
+                flg = false;
+            }
+        }while(flg);
+
+    }
+
+next(a);
 
 
 
