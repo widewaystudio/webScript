@@ -37,8 +37,7 @@ function newDepth(root,v){
         result = false;
     while(flg){
         if(root.value === v){
-            console.log(root);
-           result = true;
+            result = true;
         }
         if(root.right !== null){
             tempA.push(root);
