@@ -38,6 +38,7 @@ function newDepth(root,v){
     while(flg){
         if(root.value === v){
             result = true;
+            break;
         }
         if(root.right !== null){
             tempA.push(root);
