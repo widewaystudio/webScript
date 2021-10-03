@@ -35,14 +35,14 @@ let h = new Node("h");
 let i = new Node("i");
 
 
-a.left = b;
-a.right = c;
-b.left = d;
-b.right = e;
-c.left = f;
-c.right = g;
-g.left = h;
-g.right = i;
+a.left = b1;
+a.right = c1;
+b.left = d1;
+b.right = e1;
+c.left = f1;
+c.right = h1;
+h.left = g1;
+g.right = i1;
 
 
 function diffTree(origin,target){
@@ -68,54 +68,67 @@ function compareTree(origin,target){
 
 //非递归对比二叉树是否相同
 
+function ergodic(root,exchange){
+    let tempA = [],
+        tempV = null,
+        flg  = true,
+        temp = null;
+    // exchange为true,执行左右树互换
+    if(exchange === true){
+        temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+    }
+
+    return function(){
+        if(root.left !== null || root.right !== null || tempA.length !== 0){
+            tempV = root.value;
+            if(root.right !== null){
+                tempA.push(root.right);
+            }
+            if(root.left !== null){
+                root = root.left;
+            }else{
+                root = tempA.pop();
+            }
+            return tempV;
+        }else{
+            if(flg){
+                flg = false;
+                return root.value;
+            }
+            return null;
+        }
+
+
+
+    }
+}
+
+
 function noRecur(origin,target){
-  if(origin == target) return true;
-  let flg = true,
-      tempA = [],
-      tempB = [],
-      count = 0;
+  if(origin === null && target !== null) return false;
+   let rootA = ergodic(origin),
+       rootB = ergodic(target),
+       rootBValue = '',
+       rootAValue = '',
+       flg = true;
   while(flg){
-      if(origin == null && target != null || origin !== null && target === null) return false;
-      if(origin.value !== target.value) return false;
-
-      if(origin.left == null && origin.right == null && target.left = null && target.right == null && tempA.length = 0 && tempB.length == 0){
-         return true;
-      }
-
-      if(origin.left == null && target.left != null || origin.left != null && target.left == null)
-      {  return false;}
-      else{
-          origin = origin.left;
-          target = target.left;
-      }
-
-      if(origin.right == null && target.right != null || origin.right != null && target.left == null){
+      rootAValue = rootA();
+      rootBValue = rootB();
+      if(rootAValue !== rootBValue){
           return false;
-      }else{
-          tempA.push(origin.right);
-          tempB.push(target.right);
+      }else if(rootAValue === null){
+          break;
       }
-
-      if(origin.left == null && target.left == null){
-          origin = tempA.pop();
-          target = tempB.pop();
-      }
-
-      count ++;
-      if(count > 30){
-          flg = false;
-      }
-
-
-
   }
-
+ return true;
 
 }
 
 
 
-
+console.log(noRecur(a1,a));
 
 
 console.log(compareTree(a,a1));
