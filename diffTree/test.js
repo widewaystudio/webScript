@@ -68,18 +68,11 @@ function compareTree(origin,target){
 
 //非递归对比二叉树是否相同
 
-function ergodic(root,exchange){
+function ergodic(root){
     let tempA = [],
         tempV = null,
         flg  = true,
         temp = null;
-    // exchange为true,执行左右树互换
-    if(exchange === true){
-        temp = root.left;
-        root.left = root.right;
-        root.right = temp;
-    }
-
     return function(){
         if(root.left !== null || root.right !== null || tempA.length !== 0){
             tempV = root.value;
@@ -89,7 +82,9 @@ function ergodic(root,exchange){
             if(root.left !== null){
                 root = root.left;
             }else{
-                root = tempA.pop();
+                if(tempA.length !== 0){
+                    root = tempA.pop();
+                }
             }
             return tempV;
         }else{
@@ -99,9 +94,6 @@ function ergodic(root,exchange){
             }
             return null;
         }
-
-
-
     }
 }
 
