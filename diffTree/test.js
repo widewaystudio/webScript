@@ -15,14 +15,15 @@ let h1 = new Node("h");
 let i1 = new Node("i");
 
 
-a1.left = b1;
-a1.right = c1;
-b1.left = d1;
-b1.right = e1;
-c1.left = f1;
-c1.right = h1;
-h1.left = g1;
-g1.right = i1;
+a1.left = c1;
+a1.right = b1;
+b1.left = e1;
+b1.right = d1;
+// b1.right = e1;
+// c1.left = f1;
+// c1.right = h1;
+// h1.left = g1;
+// g1.right = i1;
 
 let a = new Node("a");
 let b = new Node("b");
@@ -35,14 +36,14 @@ let h = new Node("h");
 let i = new Node("i");
 
 
-a.left = b1;
-a.right = c1;
-b.left = d1;
-b.right = e1;
-c.left = f1;
-c.right = h1;
-h.left = g1;
-g.right = i1;
+a.left = b;
+a.right = c;
+b.left = d;
+b.right = e;
+// c.left = f1;
+// c.right = h1;
+// h.left = g1;
+// g.right = i1;
 
 
 function diffTree(origin,target){
@@ -68,50 +69,76 @@ function compareTree(origin,target){
 
 //非递归对比二叉树是否相同
 
+function readOrder(root,right,left,Arr){
+    if(right !== null){
+        Arr.push(right);
+    }
+    if(left !== null){
+        root = left;
+    }else{
+        if(Arr.length !== 0){
+            root = Arr.pop();
+        }
+    }
+    return root;
+}
+
 function ergodic(root){
     let tempA = [],
         tempV = null,
         flg  = true,
-        temp = null;
-    return function(){
+        temps = [],
+        tempRight = null;
+    return function(v){
         if(root.left !== null || root.right !== null || tempA.length !== 0){
             tempV = root.value;
-            if(root.right !== null){
-                tempA.push(root.right);
+            tempRight = root.right === null ? root.right : root.right.value;
+            tempV += "#" + (root.left === null ? root.left : root.left.value) + "#" + tempRight;
+            if(v !== undefined && v !== null){
+                temps = v.split("#");
             }
-            if(root.left !== null){
-                root = root.left;
+            if(temps[1] === tempRight){
+               root = readOrder(root,root.left,root.right,tempA);
             }else{
-                if(tempA.length !== 0){
-                    root = tempA.pop();
-                }
+               root = readOrder(root,root.right,root.left,tempA);
             }
             return tempV;
         }else{
             if(flg){
                 flg = false;
-                return root.value;
+                tempV = root.value + "#" + root.left + "#" + root.right;
+                return tempV;
             }
             return null;
         }
     }
 }
 
+function contrast(str1,str2,B){
+    if(B !== true){
+       return  str1 !== str2;
+    }else{
+        let temps = str1.replace(/(#\w+)(#\w+)$/g,($,$1,$2) => $2 + $1);
+        return temps !== str2 && str1 !== str2;
+    }
+}
 
-function noRecur(origin,target){
+
+// 加入exchange参数，实现左右树互换为同一树时的比较方法
+function noRecur(origin,target,exchange){
   if(origin === null && target !== null) return false;
    let rootA = ergodic(origin),
-       rootB = ergodic(target),
+       rootB = ergodic(target,exchange),
        rootBValue = '',
        rootAValue = '',
        flg = true;
   while(flg){
       rootAValue = rootA();
-      rootBValue = rootB();
-      if(rootAValue !== rootBValue){
-          return false;
-      }else if(rootAValue === null){
+      rootBValue = rootAValue === null ? rootB() : rootB(rootAValue);
+      if(rootAValue === null){
           break;
+      }else if(contrast(rootAValue,rootBValue,exchange)){
+         return false;
       }
   }
  return true;
@@ -120,10 +147,9 @@ function noRecur(origin,target){
 
 
 
-console.log(noRecur(a1,a));
+console.log(noRecur(a1,a,true));
 
 
 console.log(compareTree(a,a1));
-
 
 
