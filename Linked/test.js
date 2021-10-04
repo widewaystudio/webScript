@@ -55,27 +55,8 @@ function reduction(pre,mid,next){
 }
 console.log(reduction(null,b,c));
 
+//根据前序中序，中序后序遍历还原二叉树，reduction(前序，中序，后序),再执行时，将未知的序列，输入为null
 
-
-function onceAct(){
-    let obj = {},
-        count = 0;
-    return function(old) {
-        ++count;
-        let times = "T" + count;
-        obj[times] = old;
-        return function(newValue){
-            if(obj[times] === newValue){
-                return false;
-            }else{
-                obj[times] = newValue;
-                return true;
-            }
-        }
-
-    }
-
-}
 
 
 
