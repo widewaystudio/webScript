@@ -153,3 +153,7 @@ console.log(noRecur(a1,a,true));
 console.log(compareTree(a,a1));
 
 
+///递归算法，识别出新旧树的变化
+// 原来没有的，现在有，则为新增
+//原来有，现在没有，则为删除
+// 原来有，现在值发生改变，则为是修改

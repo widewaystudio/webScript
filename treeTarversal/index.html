@@ -108,55 +108,57 @@
 
    }
 
-    function next(root){
-        if(root == null) return;
-        let flg = true,
-            rootChild = [],
-            temp = null,
-            count = 0,
-            already = [],
-            temps = '',
-            temproot = root;
-        do{
-            if(root.left !== null){
-                rootChild.push(root);
-                root = root.left;
-            }else if(root.right !== null){
-                rootChild.push(root);
-                root = root.right;
-            }
-            if(root.left == null && root.right == null){
-                console.log(root.value);
-                while(already.length != 0 && (already.slice(-1)[0].right.value == root.value || already.slice(-1)[0].right.value == temps) ){
-                    temps = already.pop().value;
-                    console.log(temps);
-                }
 
-               if(rootChild.length !== 0){
-                   temp = rootChild.pop();
-                   if(temp.right !== null){
-                       root = temp.right;
-                       if(temp.value == temproot.value){
-                           console.log(temp.value);
-                       }else{
-                           already.push(temp);
-                       }
-                   }else{
-                       console.log(temp.value);
-                   }
+    // 后序遍历非递归优化版
+    function optimizeNext(root){
+        if(root === null) return null;
+        let tempA = [],
+            depthL = 0,
+            depthR = 0,
+            flag = true,
+            temps = null,
+            count = 0,
+            rootNode = root.value,
+            flagR = true;
+        while(true){
+
+            if(root.left === null && root.right === null || flag === false){
+                console.log(root.value);
+
+            }
+            if(root.value === rootNode && flag === false){
+                break;
+            }
+            if(flag !== false && (root.left !== null || root.right !== null)){
+
+                tempA.push([root,false])
+            }
+            if(root.right !== null && flag !== false ){
+               if(root.right.left !== null || root.right.right !== null){
+                   tempA.push([root.right,flagR]);
+               }else{
+                   tempA.push([root.right,false])
                }
 
             }
-
-            if(root.right == null && root.left == null && already.length == 0 && rootChild.length == 0 ){
-                flg = false;
+            // console.log(tempA);
+            if(root.left !== null && flag === true){
+                root = root.left;
+            }else {
+                if(tempA.length !== 0){
+                    temps = tempA.pop();
+                    // console.log(temps)
+                    flag = temps[1];
+                    root = temps[0];
+                }
             }
-        }while(flg);
 
+        }
     }
-
-next(a);
-
+    console.log("后序遍历递归版");
+endTraversal(a);
+    console.log("优化后的后序遍历版");
+optimizeNext(a);
 
 
 
