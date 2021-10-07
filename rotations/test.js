@@ -114,17 +114,32 @@ function noRecursion(root){
         depthR = 0,
         flag = true,
         temps = null,
+        newRoot = null,
         count = 0,
         rootNode = root.value,
         flagR = true;
     while(true){
 
         if(root.left === null && root.right === null || flag === false){
-            console.log(root.value);
+
+                  depthL = depth(root.left);
+                  depthR = depth(root.right);
+
+                  console.log(depthL,depthR);
+                  if(depthL > depthR + 1){
+                      newRoot = root.value;
+                    root = rightSpin(root);
+                  }
+                  if(depthR > depthL + 1){
+                      newRoot = root.value;
+                      console.log(root.value);
+                    root = leftSpin(root);
+                  }
+                  console.log(newRoot,rootNode,flag);
 
         }
-        if(root.value === rootNode && flag === false){
-            break;
+        if((newRoot === rootNode || root.value === rootNode) && flag === false ){
+            return root;
         }
         if(flag !== false && (root.left !== null || root.right !== null)){
 
@@ -148,12 +163,15 @@ function noRecursion(root){
                 root = temps[0];
             }
         }
-
+      count++;
+        if(count > 20){
+            break;
+        }
     }
+    return root;
 }
 
 
 
-a = leftSpin(a);
-console.log(noRecursion(a));
+console.log(noRecursion(d1));
 
