@@ -124,8 +124,6 @@ function noRecursion(root){
 
                   depthL = depth(root.left);
                   depthR = depth(root.right);
-
-                  console.log(depthL,depthR);
                   if(depthL > depthR + 1){
                       newRoot = root.value;
                     root = rightSpin(root);
@@ -135,8 +133,6 @@ function noRecursion(root){
                       console.log(root.value);
                     root = leftSpin(root);
                   }
-                  console.log(newRoot,rootNode,flag);
-
         }
         if((newRoot === rootNode || root.value === rootNode) && flag === false ){
             return root;
